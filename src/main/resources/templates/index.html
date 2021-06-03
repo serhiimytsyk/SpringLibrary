@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1 th:text="Hello"></h1>
+
+    <table>
+        <tr>
+            <td>Ready to login?</td>
+            <td>
+                <form action="/login" method="get">
+                    <button type="submit">Log in</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>Don't have an account?</td>
+            <td>
+                <form action="/register" method="get">
+                    <button type="submit">Register</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
