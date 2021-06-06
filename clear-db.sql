@@ -20,21 +20,18 @@ INSERT INTO roles VALUES(3);
 
 CREATE TABLE users
 (
-	id INTEGER PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	login VARCHAR(30) UNIQUE NOT NULL,
-	password VARCHAR(30) NOT NULL,
+	password VARCHAR(300) NOT NULL,
 	first_name VARCHAR(30) NOT NULL,
 	last_name VARCHAR(30) NOT NULL,
 	email VARCHAR(30) NOT NULL,
 	role_id INTEGER REFERENCES roles(id) ON DELETE CASCADE
 );
 
-INSERT INTO users VALUES(1, 'smytsyk_admin', 'qwerty', 'Serhii', 'Mytsyk', 'mytsyk.s.v@gmail.com', 3);
-INSERT INTO users VALUES(2, 'smytsyk_librarian', 'qwerty', 'Serhii', 'Mytsyk', 'mytsyk.s.v@gmail.com', 2);
-
 CREATE TABLE books
 (
-	id INTEGER PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(30) NOT NULL,
 	author VARCHAR(60) NOT NULL,
 	publisher VARCHAR(30) NOT NULL,
@@ -43,7 +40,7 @@ CREATE TABLE books
 
 CREATE TABLE orders
 (
-	id INTEGER PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	reader_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
 	book_id INTEGER REFERENCES books(id) ON DELETE CASCADE,
 	order_status_id INTEGER REFERENCES order_statuses(id) ON DELETE CASCADE,

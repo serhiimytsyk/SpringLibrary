@@ -1,33 +1,66 @@
 package smytsyk.final_project.spring.library.library.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import smytsyk.final_project.spring.library.library.dto.UserDTO;
 import smytsyk.final_project.spring.library.library.entitiy.User;
 import smytsyk.final_project.spring.library.library.repository.UserRepository;
 
 import java.util.Optional;
 
 @Service
-public class UserService {
+@Qualifier("userDetailsService")
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User insertUser(String login, String password, String firstName, String lastName, String email) {
-        User user = User.builder().
-                login(login).
-                password(password).
-                firstName(firstName).
-                lastName(lastName).
-                email(email).
-                roleId(1).build();
-        return userRepository.save(user);
+    public Optional<User> getUserByLogin(String login) {
+        System.err.println("Trying to get user from db: " + login);
+        return userRepository.getByLogin(login);
     }
 
-    public Optional<User> getUserByLoginAndPassword(String login, String password) {
-        return userRepository.getByLoginAndPassword(login, password);
+    public boolean insertUserFromDTO(UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.getByLogin(userDTO.getLogin());
+        if (optionalUser.isPresent()) return false;
+
+        User user = User.builder().login(userDTO.getLogin())
+                .password(bCryptPasswordEncoder.encode(userDTO.getPassword()))
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .email(userDTO.getLastName())
+                .roleId(1).build();
+        userRepository.saveAndFlush(user);
+        return true;
+    }
+
+    public boolean updateUserFromDTO(User user, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.getByLogin(userDTO.getLogin());
+        if (optionalUser.isEmpty()) return false;
+
+        user.setPassword(userDTO.getPassword());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        userRepository.saveAndFlush(user);
+        return true;
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        System.err.println("trying to load user with login " + s);
+        return userRepository.getByLogin(s).orElseThrow(() -> new UsernameNotFoundException("User is not found"));
     }
 }
