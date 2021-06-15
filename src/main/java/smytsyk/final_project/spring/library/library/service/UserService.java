@@ -2,7 +2,6 @@ package smytsyk.final_project.spring.library.library.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,11 +23,6 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-    public Optional<User> getUserByLogin(String login) {
-        System.err.println("Trying to get user from db: " + login);
-        return userRepository.getByLogin(login);
     }
 
     public boolean insertUserFromDTO(UserDTO userDTO) {
@@ -59,8 +53,7 @@ public class UserService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        System.err.println("trying to load user with login " + s);
+    public User loadUserByUsername(String s) throws UsernameNotFoundException {
         return userRepository.getByLogin(s).orElseThrow(() -> new UsernameNotFoundException("User is not found"));
     }
 }

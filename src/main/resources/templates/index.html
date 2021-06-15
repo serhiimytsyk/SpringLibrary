@@ -1,25 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Main</title>
 </head>
 <body>
-    <h1 th:text="Hello"></h1>
+    <h1>[[#{welcome}]]</h1>
+
+    <a th:href="@{?lang=en}">English</a>
+    <a th:href="@{?lang=ru}">Русский</a>
+
+    <br>
+    <br>
 
     <table>
         <tr>
-            <td>Ready to login?</td>
+            <td>[[#{go.to.login.page.label}]]</td>
             <td>
-                <form action="/login" method="get">
-                    <button type="submit">Log in</button>
+                <form th:action="@{/login}" method="get">
+                    <button type="submit">[[#{go.to.login.page.button}]]</button>
                 </form>
             </td>
         </tr>
         <tr>
-            <td>Don't have an account?</td>
+            <td>[[#{go.to.register.page.label}]]</td>
             <td>
-                <form action="/register" method="get">
-                    <button type="submit">Register</button>
+                <form th:action="@{/register}" method="get">
+                    <button type="submit">[[#{go.to.register.page.button}]]</button>
                 </form>
             </td>
         </tr>

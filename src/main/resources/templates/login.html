@@ -2,27 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Login</title>
 </head>
 <body>
     <form th:action="@{/}" method="get">
-        <button type="submit">Go to main page</button>
+        <button type="submit">[[#{go.to.main.page}]]</button>
     </form>
 
     <form th:action="@{/login}" method="post">
         <table>
             <tr>
-                <td>Login</td>
+                <td>[[#{login.username}]]</td>
                 <td><input type="text" name="username" id="username"></td>
             </tr>
             <tr>
-                <td>Password</td>
+                <td>[[#{login.password}]]</td>
                 <td><input type="password" name="password" id="password"></td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <button type="submit">Log in</button>
+                    <button type="submit">[[#{login.button}]]</button>
                 </td>
             </tr>
         </table>
