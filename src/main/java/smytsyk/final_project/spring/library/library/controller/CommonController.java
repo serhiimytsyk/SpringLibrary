@@ -1,6 +1,7 @@
 package smytsyk.final_project.spring.library.library.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,18 +27,25 @@ public class CommonController {
 
     @GetMapping("/")
     public String goToMainPage() {
-        return "/index";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "/index";
+        }
+        return "/error";
     }
 
     @GetMapping("/login")
     public String goToLoginPage() {
-        return "/login";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "/login";
+        }
+        return "/error";
     }
 
     @PostMapping("/login")
     public String login() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.err.println(auth.getAuthorities());
         return redirectToCabinet(auth.getAuthorities());
     }
 
