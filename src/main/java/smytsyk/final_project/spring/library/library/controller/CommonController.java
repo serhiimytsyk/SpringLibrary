@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +12,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import smytsyk.final_project.spring.library.library.dto.UserDTO;
 import smytsyk.final_project.spring.library.library.entitiy.Role;
+import smytsyk.final_project.spring.library.library.entitiy.User;
 import smytsyk.final_project.spring.library.library.service.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Collection;
 
 @Controller
@@ -31,7 +34,7 @@ public class CommonController {
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return "/index";
         }
-        return "/error";
+        return redirectToCabinet(authentication.getAuthorities());
     }
 
     @GetMapping("/login")
@@ -40,12 +43,16 @@ public class CommonController {
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return "/login";
         }
-        return "/error";
+        return redirectToCabinet(authentication.getAuthorities());
     }
 
     @PostMapping("/login")
-    public String login() {
+    public String login(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.isAuthenticated()) {
+            User user = userService.loadUserByUsername(auth.getName());
+            model.addAttribute("user", user);
+        }
         return redirectToCabinet(auth.getAuthorities());
     }
 
@@ -64,7 +71,7 @@ public class CommonController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("userDTO") @Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
+    public String register(@ModelAttribute("userDTO") @Valid UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors() || !userService.insertUserFromDTO(userDTO)) {
             return "redirect:/register";
         } else {

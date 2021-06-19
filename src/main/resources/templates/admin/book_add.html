@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new book</title>
+</head>
+<body>
+    <form th:action="@{/admin/books}" method="get">
+        <button type="submit">[[#{back}]]</button>
+    </form>
+    <br>
+
+    <form th:action="@{/admin/books/add}" th:object="${bookDTO}" method="post">
+        <table>
+            <tr>
+                <td>[[#{book.name}]]</td>
+                <td><input type="text" name="name" th:field="*{name}"></td>
+            </tr>
+            <tr>
+                <td>[[#{book.author}]]</td>
+                <td><input type="text" name="author" th:field="*{author}"></td>
+            </tr>
+            <tr>
+                <td>[[#{book.publisher}]]</td>
+                <td><input type="text" name="publisher" th:field="*{publisher}"></td>
+            </tr>
+            <tr>
+                <td>[[#{book.publication.date}]]</td>
+                <td><input type="text" name="publication_date" th:field="*{publicationDate}"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">[[#{add}]]</button>
+                </td>
+            </tr>
+    </table>
+    </form>
+</body>
+</html>

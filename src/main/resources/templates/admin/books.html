@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+</head>
+<body>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">[[#{logout}]]</button>
+    </form>
+
+    <form th:action="@{/admin/cabinet}" method="get">
+        <button type="submit">[[#{back}]]</button>
+    </form>
+    <br>
+
+    <form th:if="${page == 1}" th:action="@{/admin/books/add}" method="get">
+        <button type="submit">[[#{add}]]</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">[[#{book.name}]]</th>
+                <th scope="col">[[#{book.author}]]</th>
+                <th scope="col">[[#{book.publisher}]]</th>
+                <th scope="col">[[#{book.publication.date}]]</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book: ${books}">
+                <td th:text="${book.getId()}"></td>
+                <td th:text="${book.getName()}"></td>
+                <td th:text="${book.getAuthor()}"></td>
+                <td th:text="${book.getPublisher()}"></td>
+                <td th:text="${book.getPublicationDate().format(formatter)}"></td>
+
+                <td>
+                    <form th:action="@{'/admin/books/update/' + ${book.getId()}}" method="get">
+                        <button type="submit">[[#{update}]]</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form th:action="@{'/admin/books/delete/' + ${book.getId()}}" method="get">
+                        <button type="submit">[[#{delete}]]</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+
+    <table>
+        <tr>
+            <td th:if="${page > 1}">
+                <a th:href="@{'/admin/books/' + ${page - 1} + '?sortField=' + ${sortField}}">[[#{pagination.prev}]]</a>
+            </td>
+            <td>[[#{pagination.message}]][[${page}]]</td>
+            <td th:if="${page < totalPages}">
+                <a th:href="@{'/admin/books/' + ${page + 1} + '?sortField=' + ${sortField}}">[[#{pagination.next}]]</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

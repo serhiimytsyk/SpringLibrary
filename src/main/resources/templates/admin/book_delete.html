@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete the book</title>
+</head>
+<body>
+    <form th:action="@{/admin/books}" method="get">
+        <button type="submit">[[#{back}]]</button>
+    </form>
+    <br>
+
+    <form th:action="@{'/admin/books/delete/' + ${bookToDelete.getId()}}" method="post">
+        <table>
+            <tr>
+                <td>[[#{book.name}]]</td>
+                <td th:text="${bookToDelete.getName()}"></td>
+            </tr>
+            <tr>
+                <td>[[#{book.author}]]</td>
+                <td th:text="${bookToDelete.getAuthor()}"></td>
+            </tr>
+            <tr>
+                <td>[[#{book.publisher}]]</td>
+                <td th:text="${bookToDelete.getPublisher()}"></td>
+            </tr>
+            <tr>
+                <td>[[#{book.publication.date}]]</td>
+                <td th:text="${bookToDelete.getPublicationDate().format(formatter)}"></td>
+            </tr>
+            <tr>
+                <td>[[#{book.delete.message}]]</td>
+                <td>
+                    <button type="submit">[[#{delete}]]</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

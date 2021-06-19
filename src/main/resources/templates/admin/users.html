@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">[[#{logout}]]</button>
+    </form>
+
+    <form th:action="@{/admin/cabinet}" method="get">
+        <button type="submit">[[#{back}]]</button>
+    </form>
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">[[#{register.username}]]</th>
+                <th scope="col">[[#{register.firstName}]]</th>
+                <th scope="col">[[#{register.lastName}]]</th>
+                <th scope="col">[[#{register.email}]]</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user: ${users}">
+                <td th:text="${user.getId()}"></td>
+                <td th:text="${user.getLogin()}"></td>
+                <td th:text="${user.getFirstName()}"></td>
+                <td th:text="${user.getLastName()}"></td>
+                <td th:text="${user.getEmail()}"></td>
+
+                <td>
+                    <form th:action="@{'/admin/users/setRole/' + ${user.getId()}}" method="post">
+                        <input th:if="${user.getRoleId() != 0}" type="hidden" name="roleId" value="0">
+                        <input th:if="${user.getRoleId() == 0}" type="hidden" name="roleId" value="1">
+
+                        <button th:if="${user.getRoleId() != 0}" type="submit">[[#{ban}]]</button>
+                        <button th:if="${user.getRoleId() == 0}" type="submit">[[#{unban}]]</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form th:action="@{'/admin/users/setRole/' + ${user.getId()}}" method="post">
+                        <input th:if="${user.getRoleId() != 2}" type="hidden" name="roleId" value="2">
+                        <input th:if="${user.getRoleId() == 2}" type="hidden" name="roleId" value="1">
+
+                        <button th:if="${user.getRoleId() != 2}" type="submit">[[#{appoint}]]</button>
+                        <button th:if="${user.getRoleId() == 2}" type="submit">[[#{dismiss}]]</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+
+    <table>
+        <tr>
+            <td th:if="${page > 1}">
+                <a th:href="@{'/admin/users/' + ${page - 1}}">[[#{pagination.prev}]]</a>
+            </td>
+            <td>[[#{pagination.message}]][[${page}]]</td>
+            <td th:if="${page < totalPages}">
+                <a th:href="@{'/admin/users/' + ${page + 1}}">[[#{pagination.next}]]</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

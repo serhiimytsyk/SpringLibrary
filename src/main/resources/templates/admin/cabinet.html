@@ -8,5 +8,13 @@
     <form th:action="@{/logout}" method="post">
         <button type="submit">[[#{logout}]]</button>
     </form>
+
+    <form th:action="@{/admin/books}" method="get">
+        <button type="submit">[[#{admin.books}]]</button>
+    </form>
+
+    <form th:action="@{/admin/users}" method="get">
+        <button type="submit">[[#{admin.users}]]</button>
+    </form>
 </body>
 </html>
