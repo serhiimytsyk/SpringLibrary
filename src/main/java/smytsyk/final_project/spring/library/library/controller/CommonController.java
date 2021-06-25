@@ -16,7 +16,6 @@ import smytsyk.final_project.spring.library.library.entitiy.User;
 import smytsyk.final_project.spring.library.library.service.UserService;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Collection;
 
 @Controller
@@ -47,13 +46,8 @@ public class CommonController {
     }
 
     @PostMapping("/login")
-    public String login(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated()) {
-            User user = userService.loadUserByUsername(auth.getName());
-            model.addAttribute("user", user);
-        }
-        return redirectToCabinet(auth.getAuthorities());
+    public String login() {
+        return goToCabinet();
     }
 
     private String redirectToCabinet(Collection<? extends GrantedAuthority> authorities) {
@@ -71,11 +65,37 @@ public class CommonController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("userDTO") @Valid UserDTO userDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors() || !userService.insertUserFromDTO(userDTO)) {
-            return "redirect:/register";
+    public String register(@ModelAttribute("userDTO") @Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/register";
+        } else if (!userService.insertUserFromDTO(userDTO)) {
+            model.addAttribute("loginExists", 1);
+            return "/register";
         } else {
             return "redirect:/login";
         }
+    }
+
+    @GetMapping("/update_reg")
+    public String goToChangeInfoPage(Model model,
+                                     @AuthenticationPrincipal User user) {
+        model.addAttribute("userDTO", new UserDTO(user));
+        return "/update_reg";
+    }
+
+    @PostMapping("/update_reg")
+    public String updateUser(@AuthenticationPrincipal User user,
+                             @Valid @ModelAttribute("userDTO") UserDTO userDTO,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "/update_reg";
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        userService.updateUserFromDTO(user, userDTO);
+        return redirectToCabinet(authorities);
+    }
+
+    @GetMapping("/go_to_cabinet")
+    public String goToCabinet() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return redirectToCabinet(auth.getAuthorities());
     }
 }

@@ -48,14 +48,14 @@ public class UserService implements UserDetailsService {
                 .password(bCryptPasswordEncoder.encode(userDTO.getPassword()))
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
-                .email(userDTO.getLastName())
+                .email(userDTO.getEmail())
                 .roleId(1).build();
         userRepository.saveAndFlush(user);
         return true;
     }
 
     public User updateUserFromDTO(User user, UserDTO userDTO) {
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());

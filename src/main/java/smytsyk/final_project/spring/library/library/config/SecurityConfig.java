@@ -24,6 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/reader/**").hasAuthority("READER")
                 .antMatchers("/banned/**").hasAuthority("BANNED")
                 .antMatchers("/register").not().fullyAuthenticated()
+                .antMatchers("/update_reg").fullyAuthenticated()
+                .antMatchers("/go_to_cabinet").fullyAuthenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

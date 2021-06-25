@@ -22,6 +22,7 @@ public class BookDTO {
     @Size(min = 1, max = 30)
     private String publisher;
 
+    @NonNull
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate publicationDate;
 

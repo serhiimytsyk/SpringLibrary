@@ -68,7 +68,7 @@ public class AdminController {
     public String goToUpdateBookPage(@PathVariable("id") int id,
                                      Model model) {
         Book bookToUpdate = bookService.getBookById(id);
-        model.addAttribute("bookToUpdate", bookToUpdate);
+        model.addAttribute("id", id);
         model.addAttribute("bookDTO", new BookDTO(bookToUpdate));
         return "/admin/book_update";
     }
@@ -84,7 +84,7 @@ public class AdminController {
     @PostMapping("/admin/books/add")
     public String addBook(@Valid @ModelAttribute("bookDTO") BookDTO bookDTO,
                           BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "redirect:/admin/book_add";
+        if (bindingResult.hasErrors()) return "/admin/book_add";
         bookService.insertBookFromDTO(bookDTO);
         return "redirect:/admin/books";
     }
@@ -92,8 +92,11 @@ public class AdminController {
     @PostMapping("/admin/books/update/{id}")
     public String updateBook(@PathVariable("id") int id,
                              @Valid @ModelAttribute("bookDTO") BookDTO bookDTO,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "redirect:/admin/book_update";
+                             BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("id", id);
+            return "/admin/book_update";
+        }
         bookService.updateBookFromDTO(bookDTO, id);
         return "redirect:/admin/books";
     }
@@ -122,16 +125,6 @@ public class AdminController {
         model.addAttribute("users", users);
 
         return "/admin/users";
-    }
-
-    @PostMapping("/admin/update")
-    public String updateUser(@ModelAttribute("user") User user,
-                           @Valid @ModelAttribute("userDTO") UserDTO userDTO,
-                           BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) return "redirect:/admin/cabinet";
-        User newUser = userService.updateUserFromDTO(user, userDTO);
-        model.addAttribute("user", newUser);
-        return "redirect:/admin/cabinet";
     }
 
     @PostMapping("/admin/users/setRole/{id}")

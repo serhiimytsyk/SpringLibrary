@@ -15,24 +15,29 @@
             <tr>
                 <td>[[#{book.name}]]</td>
                 <td><input type="text" name="name" th:field="*{name}"></td>
+                <td th:if="${#fields.hasErrors('name')}" style="color: red">[[#{book.name.error}]]</td>
             </tr>
             <tr>
                 <td>[[#{book.author}]]</td>
                 <td><input type="text" name="author" th:field="*{author}"></td>
+                <td th:if="${#fields.hasErrors('author')}" style="color: red">[[#{book.author.error}]]</td>
             </tr>
             <tr>
                 <td>[[#{book.publisher}]]</td>
                 <td><input type="text" name="publisher" th:field="*{publisher}"></td>
+                <td th:if="${#fields.hasErrors('publisher')}" style="color: red">[[#{book.publisher.error}]]</td>
             </tr>
             <tr>
                 <td>[[#{book.publication.date}]]</td>
                 <td><input type="text" name="publication_date" th:field="*{publicationDate}"></td>
+                <td th:if="${#fields.hasErrors('publicationDate')}" style="color: red">[[#{book.date.error}]]</td>
             </tr>
             <tr>
                 <td></td>
                 <td>
                     <button type="submit">[[#{add}]]</button>
                 </td>
+                <td></td>
             </tr>
     </table>
     </form>
