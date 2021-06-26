@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<body>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">[[#{logout}]]</button>
+    </form>
+
+    <br>
+
+    <form th:action="@{/librarian/readers}" method="get">
+        <button type="submit">[[#{back}]]</button>
+    </form>
+
+    <br>
+
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">[[#{order.bookId}]]</th>
+            <th scope="col">[[#{order.returnDate}]]</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order: ${orders}">
+            <td th:text="${order.getId()}"></td>
+            <td th:text="${order.getBookId()}"></td>
+            <td th:text="${order.getReturnDate().format(formatter)}"></td>
+            <td>
+                <form th:action="@{'/librarian/orders/close/' + '${order.getId()}'}" method="post">
+                    <button type="submit">[[#{close}]]</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{'/librarian/orders/notify/' + '${order.getId()}'}" method="post">
+                    <button type="submit">[[#{notify}]]</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+
+    <table>
+        <tr>
+            <td th:if="${page > 1}">
+                <a th:href="@{'/librarian/reader_orders/' + '${id}' + '/' + ${page - 1}}">[[#{pagination.prev}]]</a>
+            </td>
+            <td>[[#{pagination.message}]][[${page}]]</td>
+            <td th:if="${page < totalPages}">
+                <a th:href="@{'/librarian/reader_orders/' + '${id}' + '/' + ${page + 1}}">[[#{pagination.next}]]</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -9,14 +9,19 @@
         <button type="submit">[[#{logout}]]</button>
     </form>
 
+    <br>
+
     <form th:action="@{/admin/cabinet}" method="get">
         <button type="submit">[[#{back}]]</button>
     </form>
+
     <br>
 
     <form th:if="${page == 1}" th:action="@{/admin/books/add}" method="get">
         <button type="submit">[[#{add}]]</button>
     </form>
+
+    <br>
 
     <table>
         <thead>

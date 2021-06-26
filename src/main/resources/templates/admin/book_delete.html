@@ -8,6 +8,7 @@
     <form th:action="@{/admin/books}" method="get">
         <button type="submit">[[#{back}]]</button>
     </form>
+
     <br>
 
     <form th:action="@{'/admin/books/delete/' + ${bookToDelete.getId()}}" method="post">
