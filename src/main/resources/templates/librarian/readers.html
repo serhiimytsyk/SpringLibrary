@@ -36,7 +36,7 @@
                 <td th:text="${user.getLastName()}"></td>
                 <td th:text="${user.getEmail()}"></td>
                 <td>
-                    <form th:action="@{'/librarian/reader_orders/' + '${user.getId()}' + '/1'}" method="get">
+                    <form th:action="@{'/librarian/reader_orders/' + ${user.getId()} + '/1'}" method="get">
                         <button type="submit">[[#{librarian.readers.orders}]]</button>
                     </form>
                 </td>

@@ -33,12 +33,12 @@
             <td th:text="${order.getBookId()}"></td>
             <td th:text="${order.getReturnDate().format(formatter)}"></td>
             <td>
-                <form th:action="@{'/librarian/orders/close/' + '${order.getId()}'}" method="post">
+                <form th:action="@{'/librarian/orders/close/' + ${order.getId()}}" method="post">
                     <button type="submit">[[#{close}]]</button>
                 </form>
             </td>
             <td>
-                <form th:action="@{'/librarian/orders/notify/' + '${order.getId()}'}" method="post">
+                <form th:action="@{'/librarian/orders/notify/' + ${order.getId()}}" method="post">
                     <button type="submit">[[#{notify}]]</button>
                 </form>
             </td>
@@ -51,11 +51,11 @@
     <table>
         <tr>
             <td th:if="${page > 1}">
-                <a th:href="@{'/librarian/reader_orders/' + '${id}' + '/' + ${page - 1}}">[[#{pagination.prev}]]</a>
+                <a th:href="@{'/librarian/reader_orders/' + ${id} + '/' + ${page - 1}}">[[#{pagination.prev}]]</a>
             </td>
             <td>[[#{pagination.message}]][[${page}]]</td>
             <td th:if="${page < totalPages}">
-                <a th:href="@{'/librarian/reader_orders/' + '${id}' + '/' + ${page + 1}}">[[#{pagination.next}]]</a>
+                <a th:href="@{'/librarian/reader_orders/' + ${id} + '/' + ${page + 1}}">[[#{pagination.next}]]</a>
             </td>
         </tr>
     </table>

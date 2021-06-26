@@ -35,12 +35,12 @@
                 <td th:text="${order.getBookId()}"></td>
                 <td th:text="${order.getReturnDate().format(formatter)}"></td>
                 <td>
-                    <form th:action="@{'/librarian/orders/accept/' + '${order.getId()}'}" method="post">
+                    <form th:action="@{'/librarian/orders/accept/' + ${order.getId()}}" method="post">
                         <button type="submit">[[#{accept}]]</button>
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{'/librarian/orders/reject/' + '${order.getId()}'}" method="post">
+                    <form th:action="@{'/librarian/orders/reject/' + ${order.getId()}}" method="post">
                         <button type="submit">[[#{reject}]]</button>
                     </form>
                 </td>
