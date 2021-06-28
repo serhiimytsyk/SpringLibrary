@@ -9,8 +9,22 @@
         <button type="submit">[[#{logout}]]</button>
     </form>
 
+    <br>
+
     <form th:action="@{/update_reg}" method="get">
         <button type="submit">[[#{update.reg}]]</button>
+    </form>
+
+    <br>
+
+    <form th:action="@{/reader/catalog}" method="get">
+        <button type="submit">[[#{catalog}]]</button>
+    </form>
+
+    <br>
+
+    <form th:action="@{/reader/orders}" method="get">
+        <button type="submit">[[#{librarian.readers.orders}]]</button>
     </form>
 </body>
 </html>

@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import smytsyk.final_project.spring.library.library.entitiy.Book;
 
-import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
-    Page<Book> findAllByIdNotIn(Collection<Integer> ids, Pageable pageable);
+    Page<Book> findAllByIdIn(List<Integer> ids, Pageable pageable);
 }

@@ -22,8 +22,12 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">[[#{order.userId}]]</th>
+                <th scope="col">[[#{register.username}]]</th>
                 <th scope="col">[[#{order.bookId}]]</th>
+                <th scope="col">[[#{book.name}]]</th>
                 <th scope="col">[[#{order.returnDate}]]</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -32,7 +36,9 @@
             <tr th:each="order: ${orders}">
                 <td th:text="${order.getId()}"></td>
                 <td th:text="${order.getReaderId()}"></td>
+                <td th:text="${orderIdToUsername.get(order.getId())}"></td>
                 <td th:text="${order.getBookId()}"></td>
+                <td th:text="${orderIdToBookName.get(order.getId())}"></td>
                 <td th:text="${order.getReturnDate().format(formatter)}"></td>
                 <td>
                     <form th:action="@{'/librarian/orders/accept/' + ${order.getId()}}" method="post">
@@ -44,6 +50,8 @@
                         <button type="submit">[[#{reject}]]</button>
                     </form>
                 </td>
+                <td th:if="${order.getId() == orderWithErrorDate}">[[#{order.date.error.past}]]</td>
+                <td th:if="${order.getId() == orderWithErrorBook}">[[#{order.error.book}]]</td>
             </tr>
         </tbody>
     </table>

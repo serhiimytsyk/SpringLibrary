@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make your order</title>
+</head>
+<body>
+    <form th:action="@{/reader/catalog}" method="get">
+        <button type="submit">[[#{back}]]</button>
+    </form>
+
+    <br>
+
+    <form th:action="@{'/reader/make_order/' + ${book.getId()}}" th:object="${orderDTO}" method="post">
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>[[#{book.name}]]</td>
+                <td>[[#{book.author}]]</td>
+                <td>[[#{book.publisher}]]</td>
+                <td>[[#{book.publication.date}]]</td>
+                <td>[[#{order.returnDate}]]</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td th:text="${book.getId()}"></td>
+                <td th:text="${book.getName()}"></td>
+                <td th:text="${book.getAuthor()}"></td>
+                <td th:text="${book.getPublisher()}"></td>
+                <td th:text="${book.getPublicationDate().format(formatter)}"></td>
+                <td><input type="text" name="returnDate" th:field="*{returnDate}"></td>
+                <td>
+                    <button type="submit">[[#{order.make}]]</button>
+                </td>
+                <td th:if="${incorrectDateFormat > 0}" style="color: red">[[#{order.date.error.format}]]</td>
+                <td th:if="${incorrectDatePast > 0}" style="color: red">[[#{order.date.error.past}]]</td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

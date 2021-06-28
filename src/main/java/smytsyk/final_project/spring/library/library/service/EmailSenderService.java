@@ -35,17 +35,17 @@ public class EmailSenderService {
         helper.setText(text);
 
         FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
-        helper.addAttachment("Picture", file);
+        helper.addAttachment("picture.jpg", file);
 
         emailSender.send(message);
     }
 
     public void sendNotification(User user, Book book, Order order) {
-        String text = "Dear, " + user.getFirstName() + " " + user.getLastName() + "!" + System.lineSeparator() +
+        String text = "Dear " + user.getFirstName() + " " + user.getLastName() + "!" + System.lineSeparator() +
                 "You should return book №" + book.getId() + " " + book.getAuthor() + " " + book.getName() +
-                 " " + book.getPublisher() + " " + book.getPublicationDate() + System.lineSeparator() +
+                 " " + book.getPublisher() + " " + book.getPublicationDate().format(formatter) + System.lineSeparator() +
                 "not later than " + order.getReturnDate().format(formatter) + " or you will be required to pay fine!" +
-                System.lineSeparator() + " Respectfully yours, " + System.lineSeparator() + "Library";
+                System.lineSeparator() + "Respectfully yours, " + System.lineSeparator() + "Library";
         try {
             sendMessageWithAttachment(user.getEmail(), "Book return notification", text, PATH_TO_PICTURE);
         } catch (MessagingException e) {

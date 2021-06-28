@@ -5,9 +5,15 @@
     <title>Banned</title>
 </head>
 <body>
+    <h1>[[#{banned.message}]]</h1>
+
+    <br>
+
     <form th:action="@{/logout}" method="post">
         <button type="submit">[[#{logout}]]</button>
     </form>
+
+    <br>
 
     <form th:action="@{/update_reg}" method="get">
         <button type="submit">[[#{update.reg}]]</button>
